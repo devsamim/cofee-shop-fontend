@@ -1,9 +1,8 @@
-import React from "react";
-
 import Header from "../components/Header";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Addcofee = () => {
   const handleCoffee = (e) => {
@@ -17,7 +16,24 @@ const Addcofee = () => {
     const details = form.details.value;
     const photo = form.photo.value;
     const newCoffee = { name, chef, supplier, taste, category, details, photo };
+    fetch("http://localhost:5000/coffee", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+    if (data.insertedId) {
+      Swal.fire({
+        title: "Congratulation!",
+        text: "Coffee Added Successfully!",
+        icon: "success",
+      });
+    }
   };
+
   return (
     <div>
       <Header></Header>
